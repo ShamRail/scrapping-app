@@ -1,9 +1,10 @@
-package ru.study.scapping.service;
+package ru.study.scapping.service.grabber;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 import ru.study.scapping.model.dto.PublicationDTO;
+import ru.study.scapping.service.ScrappingService;
 import ru.study.scapping.utils.JSONUtils;
 
 import java.io.*;
@@ -65,7 +66,7 @@ public class GoogleScholarService implements ScrappingService<PublicationDTO> {
             }
             System.out.println("Result wrote at " + path);
 
-            Thread.sleep(120 * 1000);
+            Thread.sleep(60 * 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,11 +111,11 @@ public class GoogleScholarService implements ScrappingService<PublicationDTO> {
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getCause());
         }
-        if (!versionsLinks.isEmpty()) {
-            IntStream.range(0, list.size()).forEach(i -> {
-                parseDetail(list.get(i), versionsLinks.get(i));
-            });
-        }
+//        if (!versionsLinks.isEmpty()) {
+//            IntStream.range(0, list.size()).forEach(i -> {
+//                parseDetail(list.get(i), versionsLinks.get(i));
+//            });
+//        }
         return list;
     }
 
@@ -189,8 +190,8 @@ public class GoogleScholarService implements ScrappingService<PublicationDTO> {
     }
 
     public static void main(String[] args) throws Exception {
-        parseKeyWords();
-        //saveToJson();
+        //parseKeyWords();
+        saveToJson();
     }
 
     private static void saveToJson() throws IOException {
@@ -198,9 +199,8 @@ public class GoogleScholarService implements ScrappingService<PublicationDTO> {
         List<String> analyzed = Files.readAllLines(Path.of("./log/log-to-save.txt"));
         List<String> keyWords = Files.readAllLines(Path.of("./data/en-keywords.txt"));
         keyWords.removeAll(analyzed);
-        if (!keyWords.isEmpty()) {
+        for (String key : keyWords) {
             long start = System.currentTimeMillis();
-            String key = keyWords.get(0);
             System.out.println("Parse key word: " + key);
             String path = String.format("./script-out/%s.txt", key);
             List<PublicationDTO> result = gss.parseFile(path);

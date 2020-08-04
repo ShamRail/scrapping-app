@@ -21,6 +21,12 @@ public class WebPageDTO implements ScrappingModel {
 
     private String language;
 
+    private String theme = "#";
+
+    private String themeTranslation = "#";
+
+    private String keyWord;
+
     @Override
     public String toString() {
         return String.format(
@@ -28,12 +34,14 @@ public class WebPageDTO implements ScrappingModel {
                         "%10s: %s%n" +
                         "%10s: %s%n" +
                                 "%10s: %s%n" +
-                        "%10s: %s%n",
+                                "%10s: %s%n" +
+                                "%10s: %s%n",
                 "Title", title,
                 "Site", site,
                 "Link", link,
                 "Snippet", snippet,
-                "Language", language
+                "Language", language,
+                "Key word", keyWord
         );
     }
 }

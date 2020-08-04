@@ -1,9 +1,10 @@
-package ru.study.scapping.service;
+package ru.study.scapping.service.grabber;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.study.scapping.model.dto.PublicationDTO;
 import ru.study.scapping.model.dto.WebPageDTO;
+import ru.study.scapping.service.ScrappingService;
 import ru.study.scapping.utils.JSONUtils;
 
 import java.io.File;
@@ -81,6 +82,7 @@ public class GService implements ScrappingService<WebPageDTO> {
             }
 
             String key = ENG.equals(language) ? enKey : ruKey;
+            String lang = ENG.equals(language) ? "en" : "ru";
 
             String searchPart1 = httpRequest(QueryBuilder.query(key, key, language));
             String searchPart2 = httpRequest(QueryBuilder.query(key, key, language, NEXT_PAGE));
@@ -90,13 +92,12 @@ public class GService implements ScrappingService<WebPageDTO> {
                 searchPart2 = httpRequest(QueryBuilder.query(key, language, NEXT_PAGE));
             }
 
-            String target1 = "./json-out/" + enKey + "/" + key + "-1" + ".json";
-            String target2 = "./json-out/" + enKey + "/" + key + "-2" + ".json";
+            String target1 = "./json-out/" + enKey + "/" + key + "-" + lang + "-1" + ".json";
+            String target2 = "./json-out/" + enKey + "/" + key + "-" + lang + "-2" + ".json";
 
             Files.write(Path.of(target1), searchPart1.getBytes());
             Files.write(Path.of(target2), searchPart2.getBytes());
 
-            String lang = ENG.equals(language) ? "en" : "ru";
             List<WebPageDTO> part1 = parseFile(target1, lang);
             List<WebPageDTO> part2 = parseFile(target2, lang);
 
@@ -162,14 +163,14 @@ public class GService implements ScrappingService<WebPageDTO> {
             System.out.println("Parse key word: " + key);
             List<WebPageDTO> result = gss.parse(key);
 
-            result.forEach(System.out::println);
-
-            Files.write(Path.of("./log/g-log.txt"), (System.lineSeparator() + key).getBytes(), StandardOpenOption.APPEND);
+            if (!result.isEmpty()) {
+                Files.write(Path.of("./log/g-log.txt"), (System.lineSeparator() + key).getBytes(), StandardOpenOption.APPEND);
+            }
 
             long end = System.currentTimeMillis();
             double time = (end - start) / 1000.0;
             System.out.println();
-            System.out.printf("Time: %.2f%n", (time / 60.0));
+            System.out.printf("%d. Time: %.2f%n", count + 1, (time / 60.0));
         }
     }
 
