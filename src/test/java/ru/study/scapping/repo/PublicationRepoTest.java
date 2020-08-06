@@ -8,7 +8,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.study.scapping.model.domain.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -148,4 +150,22 @@ public class PublicationRepoTest {
         Assert.assertEquals(List.of(author, author1), result.get(0).getAuthors());
     }
 
+    @Test
+    public void test() {
+        KeyWord kw1 = new KeyWord("kw1", "kw1");
+        KeyWord kw2 = new KeyWord("kw2", "kw2");
+        keyWordRepo.save(kw1);
+        keyWordRepo.save(kw2);
+        Publication publication1 = new Publication();
+        publication1.setKeyWord(kw1);
+        Publication publication2 = new Publication();
+        publication2.setKeyWord(kw2);
+        publicationRepo.save(publication1);
+        publicationRepo.save(publication2);
+        List<Integer> ids = publicationRepo.keyWord().stream()
+                .flatMap(Arrays::stream)
+                .map(i -> (Integer) i)
+                .collect(Collectors.toList());
+        Assert.assertEquals(List.of(kw1.getId(), kw2.getId()), ids);
+    }
 }

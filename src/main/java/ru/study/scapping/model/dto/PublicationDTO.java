@@ -28,6 +28,8 @@ public class PublicationDTO implements ScrappingModel {
 
     private String keyWord = "#";
 
+    private String keyWordTranslation = "#";
+
     private List<String> authors = new LinkedList<>();
 
     @Override

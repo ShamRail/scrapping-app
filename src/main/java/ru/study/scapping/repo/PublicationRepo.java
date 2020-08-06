@@ -29,4 +29,7 @@ public interface PublicationRepo extends JpaRepository<Publication, Integer> {
             "where p.theme = :theme and p.keyWord = :kw")
     List<Publication> findWithAllByThemeAndKeyWord(@Param("theme") Theme theme, @Param("kw") KeyWord keyWord);
 
+    @Query(value = "select distinct p.key_word_id from publication p", nativeQuery = true)
+    List<Object[]> keyWord();
+
 }
