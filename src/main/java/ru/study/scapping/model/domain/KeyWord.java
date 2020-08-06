@@ -1,15 +1,15 @@
 package ru.study.scapping.model.domain;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
+@EqualsAndHashCode(of = {"id", "name"})
 @Entity
 public class KeyWord {
 
@@ -34,4 +34,15 @@ public class KeyWord {
         this.translation = translation;
         this.theme = theme;
     }
+
+    public String nameWithTranslation() {
+        return String.format("%s | %s", name, translation);
+    }
+
+    public static KeyWord idStub(int id) {
+        KeyWord keyWord = new KeyWord();
+        keyWord.id = id;
+        return keyWord;
+    }
+
 }

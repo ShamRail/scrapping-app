@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Статьи</title>
+    <title>О нас</title>
 
 </head>
 
@@ -20,18 +20,18 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-primary" href="index.html">Главная<span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-primary" th:href="@{/app}">Главная<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-primary" href="publication.html">Публикации</a>
+                    <a class="nav-link text-primary" th:href="@{/app/publications}">Публикации</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-primary" href="#">Статьи</a>
+                    <a class="nav-link text-primary" th:href="@{/app/pages}">Статьи</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-primary" href="about.html">О нас</a>
+                    <a class="nav-link text-primary" href="#">О нас</a>
                 </li>
             </ul>
         </div>
@@ -39,41 +39,45 @@
 </div>
 <br>
 <div class="container">
-    <form class="form">
-        <div class="form-group">
-            <label for="theme">Тема:</label>
-            <select class="custom-select" id="theme">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="key-words">Кл. слова:</label>
-            <select class="custom-select" id="key-words">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Поиск</button>
-    </form>
-    <br>
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Название</th>
-            <th>Кл. слово</th>
-            <th>Сайт</th>
-            <th>Ссылка</th>
+            <th>Группа</th>
+            <th>Студент</th>
+            <th>Роль</th>
+            <th>Обязанности</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>A Vision of Cyber-Physical Cloud Computing for Smart Networked ...</td>
-            <td>Cloud computing in cyberphysical system | Облачные вычисления в кибер-физических системах</td>
-            <td><a href="www.nist.gov" target="_blank">www.nist.gov</a></td>
-            <td><a href="https://www.nist.gov/publications/vision-cyber-physical-cloud-computing-smart-networked-systems" target="_blank">Перейти</a></td>
+            <td>ПРО-318</td>
+            <td>Гайнутдинов Вадим</td>
+            <td>Аналитик</td>
+            <td>Анализ ключевых слов</td>
+        </tr>
+        <tr>
+            <td>ПРО-318</td>
+            <td>Башаров Роман</td>
+            <td>Разработчик</td>
+            <td>Разработка прикладных программ парсинга</td>
+        </tr>
+        <tr>
+            <td>ПРО-318</td>
+            <td>Гимранов Эрнест</td>
+            <td>Разработчик</td>
+            <td>Разработка web-приложения</td>
+        </tr>
+        <tr>
+            <td>ПРО-318</td>
+            <td>Шамсемухаметов Раиль</td>
+            <td>Разработчик</td>
+            <td>
+                Разработка прикладного прикладных программ парсинга
+                <br>
+                Разработка web-приложения
+                <br>
+                Создание и поддержания БД
+            </td>
         </tr>
         </tbody>
     </table>

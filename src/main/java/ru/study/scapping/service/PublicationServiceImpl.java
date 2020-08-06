@@ -31,11 +31,13 @@ public class PublicationServiceImpl implements PublicationService {
 
     @PostConstruct
     public void initTheme() {
-        Theme theme = new Theme(
-                "The functioning of cyber-physical systems and their development",
-                "Функционировании киберфизических систем и их разработка "
-        );
-        themeRepo.save(theme);
+        if (themeRepo.findAll().isEmpty()) {
+            Theme theme = new Theme(
+                    "The functioning of cyber-physical systems and their development",
+                    "Функционирование киберфизических систем и их разработка"
+            );
+            themeRepo.save(theme);
+        }
     }
 
     @Override

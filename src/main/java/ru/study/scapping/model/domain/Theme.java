@@ -27,4 +27,15 @@ public class Theme {
         this.name = name;
         this.translation = translation;
     }
+
+    public String nameWithTranslation() {
+        return String.format("%s | %s", name, translation);
+    }
+
+    public static Theme idStub(int id) {
+        Theme theme = new Theme();
+        theme.id = id;
+        return theme;
+    }
+
 }
