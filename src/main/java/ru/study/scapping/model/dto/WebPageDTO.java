@@ -27,6 +27,8 @@ public class WebPageDTO implements ScrappingModel {
 
     private String keyWord;
 
+    private String keyWordTranslation = "#";
+
     @Override
     public String toString() {
         return String.format(
