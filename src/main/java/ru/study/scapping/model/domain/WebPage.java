@@ -16,8 +16,10 @@ public class WebPage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 511)
     private String title;
 
+    @Column(length = 511)
     private String site;
 
     @Column(length = 511)

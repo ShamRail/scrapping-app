@@ -15,4 +15,6 @@ public interface KeyWordRepo extends JpaRepository<KeyWord, Integer> {
 
     Optional<KeyWord> findByName(String name);
 
+    List<KeyWord> findByIdIn(List<Integer> ids);
+
 }

@@ -2,10 +2,7 @@ package ru.study.scapping.model.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @Data
@@ -16,6 +13,7 @@ public class Journal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 511)
     private String name;
 
     public Journal(String name) {

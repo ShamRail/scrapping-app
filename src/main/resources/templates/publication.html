@@ -12,6 +12,27 @@
 
 	<title>Публикации</title>
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(function () {
+			$('#key-words').change(function () {
+				var selected = $('#key-words').val();
+				var authorsControl = $('#authors');
+				authorsControl.prop("disabled", true);
+				alert(selected);
+				var html = "<option value='0' id='default-ats'>Все</option>";
+				for (var i = 0; i < selected.length; i++) {
+					html += "<option value='" + selected[i] + "'>" + selected[i] + "</option>";
+				}
+				authorsControl.html(html);
+				authorsControl.prop("disabled", false);
+			});
+			$('#default-ats').click(function () {
+				$('#authors option').prop("selected", false);
+				$('#default-ats').prop("selected", true);
+			})
+		});
+	</script>
 </head>
 
 <body>
@@ -50,7 +71,7 @@
 			</div>
 			<div class="form-group">
 				<label for="key-words">Кл. слова:</label>
-				<select class="custom-select" id="key-words">
+				<select class="custom-select" id="key-words" multiple>
 					<option value="1">One</option>
 					<option value="2">Two</option>
 					<option value="3">Three</option>
@@ -58,7 +79,8 @@
 			</div>
 			<div class="form-group">
 				<label for="authors">Авторы:</label>
-				<select class="custom-select" id="authors">
+				<select class="custom-select" id="authors" multiple>
+					<option value="0" id="default-ats">Все</option>
 					<option value="1">One</option>
 					<option value="2">Two</option>
 					<option value="3">Three</option>
@@ -101,6 +123,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
+
 </body>
 
 </html>

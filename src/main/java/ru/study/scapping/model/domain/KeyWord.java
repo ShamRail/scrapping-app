@@ -17,8 +17,10 @@ public class KeyWord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 511)
     private String name;
 
+    @Column(length = 511)
     private String translation;
 
     @ManyToOne(fetch = FetchType.EAGER)

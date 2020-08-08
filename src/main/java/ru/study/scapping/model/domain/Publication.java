@@ -19,11 +19,13 @@ public class Publication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 1000)
     private String title;
 
+    @Column(length = 1000)
     private String link = "#";
 
-    @Column(length = 2000)
+    @Column(length = 3500)
     private String snippet;
 
     private Integer year;
@@ -37,11 +39,7 @@ public class Publication {
     @ManyToOne(fetch = FetchType.EAGER)
     private Journal journal;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "publications_authours",
             joinColumns = { @JoinColumn(name = "author_id") },

@@ -16,6 +16,10 @@ public interface PublicationService {
 
     List<Publication> findByThemeAndKeyWord(Theme theme, KeyWord keyWord);
 
+    List<Publication> findByThemeAndKeyWords(Theme theme, List<KeyWord> keyWord);
+
+    List<KeyWord> findAvailableKeyWords();
+
     List<Publication> findByThemeAndKeyWordAndAuthors(Theme theme, KeyWord keyWord, List<Author> authorsID);
 
     List<Publication> findByThemeAndKeyWordsAndAuthors(Theme theme, List<KeyWord> keyWords, List<Author> authorsID);

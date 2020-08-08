@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.study.scapping.model.domain.*;
 import ru.study.scapping.model.dto.PublicationDTO;
-import ru.study.scapping.model.dto.WebPageDTO;
 import ru.study.scapping.repo.*;
 
 import javax.annotation.PostConstruct;
@@ -50,7 +49,7 @@ public class PublicationServiceImpl implements PublicationService {
         Publication publication = new Publication();
         publication.setLink(publicationDTO.getLink());
         publication.setSnippet(publicationDTO.getSnippet());
-        publication.setYear(publication.getYear());
+        publication.setYear(publicationDTO.getYear());
         publication.setTitle(publicationDTO.getTitle());
 
         publication.setTheme(saveTheme(publicationDTO));
@@ -130,6 +129,22 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public List<Publication> findByThemeAndKeyWord(Theme theme, KeyWord keyWord) {
         return publicationRepo.findWithAllByThemeAndKeyWord(theme, keyWord);
+    }
+
+    @Override
+    public List<Publication> findByThemeAndKeyWords(Theme theme, List<KeyWord> keyWords) {
+        return keyWords.stream()
+                .flatMap(kw -> findByThemeAndKeyWord(theme, kw).stream())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<KeyWord> findAvailableKeyWords() {
+        List<Integer> ids = publicationRepo.keyWords().stream()
+                .flatMap(Arrays::stream)
+                .map(el -> (Integer) el)
+                .collect(Collectors.toList());
+        return keyWordRepo.findByIdIn(ids);
     }
 
     @Override

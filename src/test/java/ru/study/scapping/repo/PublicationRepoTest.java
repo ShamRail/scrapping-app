@@ -162,7 +162,7 @@ public class PublicationRepoTest {
         publication2.setKeyWord(kw2);
         publicationRepo.save(publication1);
         publicationRepo.save(publication2);
-        List<Integer> ids = publicationRepo.keyWord().stream()
+        List<Integer> ids = publicationRepo.keyWords().stream()
                 .flatMap(Arrays::stream)
                 .map(i -> (Integer) i)
                 .collect(Collectors.toList());

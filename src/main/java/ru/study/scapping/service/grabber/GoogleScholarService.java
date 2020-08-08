@@ -1,20 +1,21 @@
 package ru.study.scapping.service.grabber;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 import ru.study.scapping.model.dto.PublicationDTO;
 import ru.study.scapping.service.ScrappingService;
-import ru.study.scapping.utils.JSONUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class GoogleScholarService implements ScrappingService<PublicationDTO> {
@@ -199,13 +200,16 @@ public class GoogleScholarService implements ScrappingService<PublicationDTO> {
         List<String> analyzed = Files.readAllLines(Path.of("./log/log-to-save.txt"));
         List<String> keyWords = Files.readAllLines(Path.of("./data/en-keywords.txt"));
         keyWords.removeAll(analyzed);
+        ObjectMapper objectMapper = new ObjectMapper();
         for (String key : keyWords) {
             long start = System.currentTimeMillis();
             System.out.println("Parse key word: " + key);
             String path = String.format("./script-out/%s.txt", key);
             List<PublicationDTO> result = gss.parseFile(path);
             Files.write(Path.of("./log/log-to-save.txt"), (System.lineSeparator() + key).getBytes(), StandardOpenOption.APPEND);
-            Files.write(Path.of(String.format("./json-out/gs/%s.json", key)), JSONUtils.serialize(result).getBytes());
+            Files.write(Path.of(String.format("./json-out/gs/%s.json", key)),
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result).getBytes()
+            );
             long end = System.currentTimeMillis();
             double time = (end - start) / 1000.0;
             System.out.println();
