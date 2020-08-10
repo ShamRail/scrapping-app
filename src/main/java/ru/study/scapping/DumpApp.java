@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class DumpApp implements CommandLineRunner {
 
     @Autowired
