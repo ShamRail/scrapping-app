@@ -17,4 +17,9 @@ public class KeyWordServiceImpl implements KeyWordService {
     public List<KeyWord> findAll() {
         return keyWordRepo.findAll();
     }
+
+    @Override
+    public List<KeyWord> findAllByIds(List<Integer> ids) {
+        return keyWordRepo.findByIdIn(ids);
+    }
 }

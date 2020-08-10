@@ -12,6 +12,7 @@ import ru.study.scapping.service.KeyWordService;
 import ru.study.scapping.service.ThemeService;
 import ru.study.scapping.service.WebPageService;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,14 +29,24 @@ public class WebPageController {
     @Autowired
     private WebPageService webPageService;
 
+    private Theme defaultTheme;
+
+    private List<KeyWord> defaultKeyWords;
+
+    @PostConstruct
+    private void init() {
+        defaultTheme = themeService.findFirst();
+        defaultKeyWords = keyWordService.findAll();
+    }
+
     @GetMapping
     public String webPagesPage(
             Model model,
             @RequestParam(value = "theme", required = false) Integer themeId,
             @RequestParam(value = "ids", required = false) List<Integer> ids) {
         model.addAttribute("requestDTO", new WPRequestDTO());
-        model.addAttribute("theme", themeService.findFirst());
-        model.addAttribute("keyWords", keyWordService.findAll());
+        model.addAttribute("theme", defaultTheme);
+        model.addAttribute("keyWords", defaultKeyWords);
         if (themeId == null || (ids == null || ids.isEmpty())) {
             model.addAttribute("webPages", List.of());
         } else {

@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @EqualsAndHashCode(of = {
@@ -45,5 +47,11 @@ public class Publication {
             joinColumns = { @JoinColumn(name = "author_id") },
             inverseJoinColumns = { @JoinColumn(name = "publication_id") })
     private List<Author> authors = new LinkedList<>();
+
+    public String authorsSeparated() {
+        return authors.stream()
+                .map(Author::getName)
+                .collect(Collectors.joining(", "));
+    }
 
 }

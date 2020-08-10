@@ -128,7 +128,8 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public List<Publication> findByThemeAndKeyWord(Theme theme, KeyWord keyWord) {
-        return publicationRepo.findWithAllByThemeAndKeyWord(theme, keyWord);
+        return publicationRepo.findWithAllByThemeAndKeyWord(theme, keyWord).stream()
+                .distinct().collect(Collectors.toList());
     }
 
     @Override
@@ -167,6 +168,7 @@ public class PublicationServiceImpl implements PublicationService {
     public List<Publication> findByThemeAndKeyWordsAndAuthors(Theme theme, List<KeyWord> keyWords, List<Author> authorsID) {
         return keyWords.stream()
                 .flatMap(kw -> findByThemeAndKeyWordAndAuthors(theme, kw, authorsID).stream())
+                .distinct()
                 .collect(Collectors.toList());
     }
 

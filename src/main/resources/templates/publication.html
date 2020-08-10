@@ -12,25 +12,43 @@
 
 	<title>Публикации</title>
 
+<!--	<script th:src="@{/js/jquery-3.5.1.js}"></script>-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 		$(function () {
-			$('#key-words').change(function () {
-				var selected = $('#key-words').val();
+
+			$('#keyWordsIDs').change(function () {
+
+				var selected = $('#keyWordsIDs').val();
 				var authorsControl = $('#authors');
 				authorsControl.prop("disabled", true);
-				alert(selected);
-				var html = "<option value='0' id='default-ats'>Все</option>";
-				for (var i = 0; i < selected.length; i++) {
-					html += "<option value='" + selected[i] + "'>" + selected[i] + "</option>";
-				}
-				authorsControl.html(html);
+				console.log("Selected items: " + selected);
+				var url = '/app/publications/authors?ids=' + selected;
+				console.log("Sending request to: " + url);
+
+				var xhttp =new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var html = "<option value='0' id='default-ats'>Все</option>";
+						var authors = JSON.parse(xhttp.responseText);
+						for (var i = 0; i < authors.length; i++) {
+							html += "<option value='" + authors[i].id + "'>" + authors[i].name + "</option>";
+						}
+						authorsControl.html(html);
+						console.log(xhttp.responseText);
+					}
+				};
+				xhttp.open("GET", url, false);
+				xhttp.send();
+
 				authorsControl.prop("disabled", false);
 			});
+
 			$('#default-ats').click(function () {
 				$('#authors option').prop("selected", false);
 				$('#default-ats').prop("selected", true);
 			})
+
 		});
 	</script>
 </head>
@@ -60,54 +78,61 @@
 </div>
     <br>
     <div class="container">
-		<form class="form">
+		<form class="form" th:object="${requestDTO}" th:action="@{/app/publications}" method="post">
 			<div class="form-group">
-				<label for="theme">Тема:</label>
-				<select class="custom-select" id="theme">
-					<option value="1">One</option>
-					<option value="2">Two</option>
-					<option value="3">Three</option>
+				<label for="themeId">Тема:</label>
+				<select class="custom-select" id="themeId" th:field="*{themeID}" required>
+					<option th:value="${theme.id}" th:text="${theme.nameWithTranslation()}" selected></option>
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="key-words">Кл. слова:</label>
-				<select class="custom-select" id="key-words" multiple>
-					<option value="1">One</option>
-					<option value="2">Two</option>
-					<option value="3">Three</option>
+				<label for="keyWordsIDs">Кл. слова: (Зажмите CTRL чтобы выбрать несколько)</label>
+				<select class="custom-select" id="keyWordsIDs" th:field="*{kwIDs}" multiple required>
+					<option th:each="kw : ${keyWords}" th:value="${kw.id}" th:text="${kw.nameWithTranslation()}"></option>
 				</select>
 			</div>
 			<div class="form-group">
-				<label for="authors">Авторы:</label>
-				<select class="custom-select" id="authors" multiple>
-					<option value="0" id="default-ats">Все</option>
-					<option value="1">One</option>
-					<option value="2">Two</option>
-					<option value="3">Three</option>
+				<label for="authors">Авторы: (Зажмите CTRL чтобы выбрать несколько)</label>
+				<select class="custom-select" id="authors" th:field="*{athIDs}" multiple disabled required>
+					<option value="-1">Выберите ключевые слова, чтобы увидеть авторов</option>
 				</select>
 			</div>
 			<button type="submit" class="btn btn-primary">Поиск</button>
 		</form>
 		<br>
-        <table class="table table-bordered">
+		<div class="container" th:if="${searchingKeyWords}">
+			<p th:text="${'Найдено: ' + publications.size()}"></p>
+			<p>По ключевым словам:</p>
+			<ul>
+				<li th:each="kw : ${searchingKeyWords}" th:text="${kw.nameWithTranslation()}"></li>
+			</ul>
+			<br>
+			<p>По авторам:</p>
+			<ul th:if="${searchingAuthors}">
+				<li th:each="a, state : ${searchingAuthors}" th:text="${a.name}" th:if="${state.count <= 5}"></li>
+				<li th:if="${searchingAuthors.size() > 5}">...</li>
+			</ul>
+			<br>
+		</div>
+        <table class="table table-bordered" style="font-size: 14px;">
             <thead>
             <tr>
+				<td>№</td>
                 <th>Название</th>
                 <th>Год</th>
-                <th>Кл. слово</th>
                 <th>Журнал</th>
                 <th>Авторы</th>
                 <th>Ссылка</th>
             </tr>
             </thead>
 			<tbody>
-				<tr>
-					<td>Industry 4.0</td>
-					<td>2014</td>
-					<td>Industry 4.0</td>
-					<td>Business & information …</td>
-					<td>H Lasi, P Fettke, HG Kemper, T Feld</td>
-					<td><a href="https://link.springer.com/content/pdf/10.1007/s12599-014-0334-4.pdf" target="_blank">Перейти</a></td>
+				<tr th:each="p, state : ${publications}">
+					<td th:text="${state.count}"></td>
+					<td th:text="${p.title}"></td>
+					<td th:text="${p.year}"></td>
+					<td th:text="${p.journal.name}"></td>
+					<td th:text="${p.authorsSeparated()}"></td>
+					<td><a th:href="${p.link}" th:text="Перейти" target="_blank"></a></td>
 				</tr>
 			</tbody>
         </table>

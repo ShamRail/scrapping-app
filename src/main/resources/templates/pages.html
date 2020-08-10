@@ -42,13 +42,13 @@
     <form class="form" th:object="${requestDTO}" method="post" th:action="@{/app/pages}">
         <div class="form-group">
             <label for="themeId">Тема:</label>
-            <select class="custom-select" id="themeId" th:field="*{themeId}">
-                <option th:value="${theme.id}" th:text="${theme.nameWithTranslation()}"></option>
+            <select class="custom-select" id="themeId" th:field="*{themeId}" required>
+                <option th:value="${theme.id}" th:text="${theme.nameWithTranslation()}" selected></option>
             </select>
         </div>
         <div class="form-group">
-            <label for="keyWordsIDs">Кл. слова:</label>
-            <select class="custom-select" id="keyWordsIDs" th:field="*{keyWordsIDs}" multiple>
+            <label for="keyWordsIDs">Кл. слова: (Зажмите CTRL чтобы выбрать несколько)</label>
+            <select class="custom-select" id="keyWordsIDs" th:field="*{keyWordsIDs}" multiple required>
                 <option th:each="kw : ${keyWords}" th:value="${kw.id}" th:text="${kw.nameWithTranslation()}"></option>
             </select>
         </div>
@@ -57,6 +57,7 @@
     <br>
     <div class="container" th:if="${searchingKeyWords}">
         <p th:text="${'Найдено: ' + webPages.size()}"></p>
+        <p>По ключевым словам:</p>
         <ul>
             <li th:each="kw : ${searchingKeyWords}" th:text="${kw.nameWithTranslation()}"></li>
         </ul>

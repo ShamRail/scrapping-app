@@ -8,4 +8,6 @@ public interface KeyWordService {
 
     List<KeyWord> findAll();
 
+    List<KeyWord> findAllByIds(List<Integer> ids);
+
 }

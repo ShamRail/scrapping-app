@@ -1,5 +1,6 @@
 package ru.study.scapping.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,13 @@ public class Author {
     }
 
     @ManyToMany(mappedBy = "authors")
+    @JsonIgnore
     private List<Publication> publications = new LinkedList<>();
+
+    public static Author idStub(int id) {
+        Author author = new Author();
+        author.setId(id);
+        return author;
+    }
 
 }
